@@ -998,3 +998,43 @@ The wording focuses on the operator's **characteristic machine behavior**. It is
 ## `windowWhen`
 
 **while** current window open then route source values into it
+
+**when** closing notifier fires then close current window and immediately create/emit the next window
+
+---
+
+## `withLatestFrom`
+
+**while** source active then retain latest values/readiness from all secondary Observables
+
+**when** source emits and every secondary has emitted at least once then emit source value combined with latest secondary values
+
+*Note:* Only the source triggers output.
+
+---
+
+## `zip`
+
+**while** inputs active then maintain one FIFO queue per input
+
+**when** every queue has at least one value then dequeue one from each and emit the tuple/projected result
+
+*Note:* Deprecated pipeable form.
+
+---
+
+## `zipAll`
+
+**while** collected inner inputs active then maintain one FIFO queue per inner
+
+**when** every inner queue has a value then dequeue one from each and emit tuple; terminate when further full tuples become impossible
+
+---
+
+## `zipWith`
+
+**while** source and supplied inputs active then maintain one FIFO queue per input
+
+**when** every queue has at least one value then dequeue one from each and emit the tuple
+
+---
