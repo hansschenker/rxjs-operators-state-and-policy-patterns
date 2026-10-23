@@ -2,6 +2,8 @@
 
 A behavioral catalog of the RxJS 7.x operator implementation modules using a compact **While–Then / When–Then Pattern**.
 
+This project now also connects the compact notation to a more explicit **Given / When / Then** transition form developed in [rxjs-bdd](https://github.com/hansschenker/rxjs-bdd).
+
 ## Core idea
 
 > **RxJS Operator Behavior = State Transition Pattern + Action Policy Pattern**
@@ -24,6 +26,55 @@ when duration ends then emit pending latest value
 ```
 
 This is deliberately a behavioral notation, not a replacement for the complete RxJS contract. Error, completion, subscription, teardown, scheduler, and configuration semantics remain part of the full operator behavior and are called out where they materially distinguish an operator.
+
+## From summary rule to explicit transition rule
+
+The compact notation can be expanded into a BDD-style state/event rule:
+
+```text
+Given <current state / state predicate>
+When  <input event>
+Then  <state transition>
+      <Action Policy / output>
+```
+
+The semantic mapping is:
+
+```text
+Given  -> current state / state predicate
+When   -> input event
+Then   -> state transition + Action Policy
+```
+
+which corresponds to the Mealy-style form:
+
+```text
+(State, Event) -> (Next State, Output)
+```
+
+For example, a `debounceTime` rule:
+
+```text
+Given silence timer active
+When source value arrives
+Then replace pending value
+     restart timer
+     emit nothing
+```
+
+This gives a useful progression:
+
+```text
+While / When behavioral summary
+          ↓
+Given / When / Then transition rules
+          ↓
+(State, Event) -> (Next State, Output)
+          ↓
+transition-table tests / implementation analysis
+```
+
+See [docs/given-when-then-pattern.md](docs/given-when-then-pattern.md) and the companion [rxjs-bdd](https://github.com/hansschenker/rxjs-bdd) repository.
 
 ## Why this notation
 
@@ -80,7 +131,7 @@ when  a new outer value arrives then cancel the current inner and start the new 
 ## Contributors
 
 - **hansschenker** — project author and While–Then / When–Then Pattern direction.
-- **OpenAI GPT-5.6 Sol** — formalization of the While–Then / When–Then Pattern and initial RxJS 7.x operator behavior catalog.
+- **OpenAI GPT-5.6 Sol** — formalization of the While–Then / When–Then Pattern, initial RxJS 7.x operator behavior catalog, and assistance extending the model with the Given / When / Then transition form and its Mealy-state-machine mapping.
 
 ## Attribution
 
